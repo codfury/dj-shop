@@ -111,10 +111,14 @@ def login(request):
                 pass
             auth.login(request, user)
             messages.success(request, 'You are now logged in.')
+            
+            #stores url form where this login page is redirected
             url = request.META.get('HTTP_REFERER')
             try:
+                #now checking if we came from checkout or cart page
                 query = requests.utils.urlparse(url).query
                 # next=/cart/checkout/
+                #params = ['next' :'/cart/checkout/' ]
                 params = dict(x.split('=') for x in query.split('&'))
                 if 'next' in params:
                     nextPage = params['next']
@@ -170,7 +174,7 @@ def forgotPassword(request):
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email__exact=email)
 
-            # Reset password email
+            # Reset password using email
             current_site = get_current_site(request)
             mail_subject = 'Reset Your Password'
             message = render_to_string('accounts/reset_password_email.html', {
@@ -198,8 +202,9 @@ def resetpassword_validate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
         user = None
 
+
     if user is not None and default_token_generator.check_token(user, token):
-        request.session['uid'] = uid
+        request.session['uid'] = uid #used this in resetpassword()
         messages.success(request, 'Please reset your password')
         return redirect('resetPassword')
     else:
@@ -213,6 +218,7 @@ def resetPassword(request):
         confirm_password = request.POST['confirm_password']
 
         if password == confirm_password:
+            #uid saved in above function now using this uid we are extracting the userid
             uid = request.session.get('uid')
             user = Account.objects.get(pk=uid)
             user.set_password(password)
