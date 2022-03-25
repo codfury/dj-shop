@@ -40,15 +40,15 @@ class Product(models.Model):
         return count
 
 class VariationManager(models.Manager):
-    def colors(self):
-        return super(VariationManager, self).filter(variation_category='color', is_active=True)
+    def edition(self):
+        return super(VariationManager, self).filter(variation_category='edition', is_active=True)
 
-    def sizes(self):
-        return super(VariationManager, self).filter(variation_category='size', is_active=True)
+    def platform(self):
+        return super(VariationManager, self).filter(variation_category='platform', is_active=True)
 
 variation_category_choice = (
-    ('color', 'color'),
-    ('size', 'size'),
+    ('edition', 'edition'),
+    ('platform', 'platform'),
 )
 
 class Variation(models.Model):

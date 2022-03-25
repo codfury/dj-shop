@@ -19,6 +19,7 @@ def add_cart(request, product_id):
     product = Product.objects.get(id=product_id) #get the product
     # If the user is authenticated
     if current_user.is_authenticated:
+        #getting all types of product variation
         product_variation = []
         if request.method == 'POST':
             for item in request.POST:
@@ -33,6 +34,9 @@ def add_cart(request, product_id):
 
 
         is_cart_item_exists = CartItem.objects.filter(product=product, user=current_user).exists()
+
+
+        #grouping the cart items according to the existing variation
         if is_cart_item_exists:
             cart_item = CartItem.objects.filter(product=product, user=current_user)
             ex_var_list = []
@@ -51,6 +55,7 @@ def add_cart(request, product_id):
                 item.save()
 
             else:
+                #creating new object in cart if the variation doesnn't exist
                 item = CartItem.objects.create(product=product, quantity=1, user=current_user)
                 if len(product_variation) > 0:
                     item.variations.clear()
@@ -202,7 +207,7 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
-        tax = (2 * total)/100
+        tax = 0.18*total
         grand_total = total + tax
     except ObjectDoesNotExist:
         pass #just ignore
