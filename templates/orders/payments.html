@@ -31,7 +31,7 @@
 				<div class="card">
 					<h5 class="card-header">Payment Method</h5>
 					<div class="card-body">
-						<p class="card-text">PayPal</p>
+						<p class="card-text">Cash On Delivery</p>
 
 					</div>
 				</div>
@@ -72,8 +72,8 @@
 									</td>
 									<td>
 										<div class="price-wrap">
-											<var class="price">$ {{ cart_item.sub_total }}</var>
-											<small class="text-muted"> $ {{ cart_item.product.price }} each </small>
+											<var class="price">Rs. {{ cart_item.sub_total }}</var>
+											<small class="text-muted">Rs. {{ cart_item.product.price }} each </small>
 										</div> <!-- price-wrap .// -->
 									</td>
 
@@ -93,25 +93,27 @@
 					<div class="card-body">
 						<dl class="dlist-align">
 							<dt>Total price:</dt>
-							<dd class="text-right">$ {{total}}</dd>
+							<dd class="text-right">Rs. {{total}}</dd>
 						</dl>
 						<dl class="dlist-align">
 							<dt>Tax:</dt>
-							<dd class="text-right"> $ {{tax}}</dd>
+							<dd class="text-right"> Rs. {{tax}}</dd>
 						</dl>
 						<dl class="dlist-align">
 							<dt>Grand Total:</dt>
-							<dd class="text-right text-dark b"><strong>$ {{grand_total}}</strong></dd>
+							<dd class="text-right text-dark b"><strong>Rs. {{grand_total}}</strong></dd>
 						</dl>
 						<hr>
 						<p class="text-center mb-3">
 							<img src="{% static './images/misc/payments.png' %}" height="26">
 						</p>
 
+						<a href="{% url 'order_complete' %}" class="btn btn-primary btn-block"> Place Order </a>
 
-						<div id="paypal-button-container">
-							<!-- PayPal Button Will Load -->
-						</div>
+
+						<!-- <div id="paypal-button-container">
+							Comment it out PayPal Button Will Load
+						</div> -->
 
 					</div> <!-- card-body.// -->
 				</div> <!-- card.// -->
@@ -128,7 +130,7 @@
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 <script>
-
+//generating csrf token
 	function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
