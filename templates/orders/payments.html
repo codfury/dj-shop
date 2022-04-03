@@ -151,7 +151,7 @@
 	var url = "{% url 'payments' %}"
 	var csrftoken = getCookie('csrftoken');
 	var orderID = "{{order.order_number}}"
-	var payment_method = 'PayPal'
+	var payment_method = 'Cash On Delivery'
 	var redirect_url = "{% url 'order_complete' %}"
 	// Render the PayPal button into #paypal-button-container
 	paypal.Buttons({
