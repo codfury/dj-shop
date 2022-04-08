@@ -45,6 +45,8 @@ def payments(request):
         orderproduct.ordered = True
         orderproduct.save()
 
+        #setting product variants after saving the orderproduct and getting the id
+        #as this a many to many feilds so we cant save before getting the order product saved id
         cart_item = CartItem.objects.get(id=item.id)
         product_variation = cart_item.variations.all()
         orderproduct = OrderProduct.objects.get(id=orderproduct.id)
@@ -57,7 +59,7 @@ def payments(request):
         product.stock -= item.quantity
         product.save()
 
-    # Clear cart
+    # Clearin the cart
     CartItem.objects.filter(user=request.user).delete()
 
     # Send order recieved email to customer
@@ -75,6 +77,7 @@ def payments(request):
         'order_number': order.order_number,
         'transID': payment.payment_id,
     }
+    #returning the required data back to the send data fucntion
     return JsonResponse(data)
 
 def place_order(request, total=0, quantity=0,):
@@ -163,4 +166,5 @@ def order_complete(request):
         }
         return render(request, 'orders/order_complete.html', context)
     except (Payment.DoesNotExist, Order.DoesNotExist):
+        #if someone randomly tries to put wrong order number or transid
         return redirect('home')
