@@ -82,13 +82,15 @@ def search(request):
     return render(request, 'store/store.html', context)
 
 def submit_review(request, product_id):
+    #storing the url the url from where the review has been submitted
     url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         try:
             reviews = ReviewRating.objects.get(user__id=request.user.id, product__id=product_id)
+            #updating the review by passing the instance param
             form = ReviewForm(request.POST, instance=reviews)
             form.save()
-            messages.success(request, 'Thank you! Your review has been updated.')
+            messages.success(request, 'Thank you the review has been updated.')
             return redirect(url)
         except ReviewRating.DoesNotExist:
             form = ReviewForm(request.POST)
@@ -101,7 +103,7 @@ def submit_review(request, product_id):
                 data.product_id = product_id
                 data.user_id = request.user.id
                 data.save()
-                messages.success(request, 'Thank you! Your review has been submitted.')
+                messages.success(request, 'Thank you for the review 👾')
                 return redirect(url)
 
 # Create your views here.

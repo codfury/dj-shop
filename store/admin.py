@@ -1,6 +1,6 @@
 import imp
 from django.contrib import admin
-from .models import Product, Variation, VariationManager
+from .models import Product, Variation, VariationManager,ReviewRating
 
 
 
@@ -23,5 +23,5 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Variation, VariationAdmin)
-# admin.site.register(ReviewRating)
+admin.site.register(ReviewRating)
 # admin.site.register(ProductGallery)
