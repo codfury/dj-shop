@@ -253,6 +253,8 @@ def edit_profile(request):
             messages.success(request, 'Your profile has been updated.')
             return redirect('edit_profile')
     else:
+        #by using the instance we can see the data inside the forms
+        #hence to auto populate the the editable data form
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=userprofile)
     context = {
@@ -273,6 +275,7 @@ def change_password(request):
         user = Account.objects.get(username__exact=request.user.username)
 
         if new_password == confirm_password:
+            #check_passsord is the method to check passwords as its hashed
             success = user.check_password(current_password)
             if success:
                 user.set_password(new_password)
