@@ -15,13 +15,14 @@ from django.template.loader import render_to_string
 
 def payments(request):
     body = json.loads(request.body)
+    print(body,333333333)
     order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
 
     # Store transaction details inside Payment model
     payment = Payment(
         user = request.user,
         payment_id = body['transID'],
-        payment_method = body['payment_method'],
+        payment_method = 'Cash On Delivery',
         amount_paid = order.order_total,
         status = body['status'],
     )
@@ -96,10 +97,14 @@ def place_order(request, total=0, quantity=0,):
         quantity += cart_item.quantity
     tax = 0.18*total
     grand_total = total + tax
+    
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
+        print(request.body)
+        print('4534534')
         if form.is_valid():
+            print('hellllo')
             # Store all the billing information inside Order table
             data = Order()
             data.user = current_user
@@ -136,8 +141,14 @@ def place_order(request, total=0, quantity=0,):
                 'total': total,
                 'tax': tax,
                 'grand_total': grand_total,
+                'transid':'cod'+str(order_number),
             }
             return render(request, 'orders/payments.html', context)
+        else:
+            print(form.errors)
+            return render(request, 'store/checkout.html', {'form':form})
+
+
     else:
         return redirect('checkout')
 
