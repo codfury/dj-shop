@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # Create your models here.
 
+
+#custom model for superusr
 class MyAccountManager(BaseUserManager):
     """Creating superuser"""
     def create_user(self, first_name, last_name, username, email, password=None):
@@ -40,7 +42,7 @@ class MyAccountManager(BaseUserManager):
         return user
 
 
-
+#User Account model
 class Account(AbstractBaseUser):
     first_name      = models.CharField(max_length=50)
     last_name       = models.CharField(max_length=50)
@@ -59,6 +61,7 @@ class Account(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
+#tells that we want required operations from the above class
     objects = MyAccountManager()
 
     def full_name(self):
